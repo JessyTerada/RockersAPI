@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>rockers-api</groupId>
+    <artifactId>rockers-api-parent</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  
+  <artifactId>rockers-api-service</artifactId>
+  <name>rockers-api-service</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    
+    <dependency>
+      <groupId>rockers-api</groupId>
+      <artifactId>rockers-api-model</artifactId>
+      <version>${rockers-api-version}</version><!--$NO-MVN-MAN-VER$-->
+    </dependency>
+    
+    <dependency>
+      <groupId>rockers-api</groupId>
+      <artifactId>rockers-api-dao</artifactId>
+      <version>${rockers-api-version}</version>
+    </dependency>
+    
+  </dependencies>
+  
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-maven-plugin</artifactId>
+  			<configuration>
+  				<executable>true</executable>
+  			</configuration>
+  		</plugin>
+  	</plugins>
+  </build>
+  
+  <repositories>
+  	<repository>
+  		<id>spring-releases</id>
+  		<url>https://repo.spring.io/libs-release</url>
+  	</repository>
+  </repositories>
+  	
+  <pluginRepositories>
+	<pluginRepository>
+		<id>spring-releases</id>
+  		<url>https://repo.spring.io/libs-release</url>
+	</pluginRepository>  	
+  </pluginRepositories>
+  
+</project>

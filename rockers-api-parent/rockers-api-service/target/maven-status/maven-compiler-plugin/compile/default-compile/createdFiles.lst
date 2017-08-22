@@ -1,0 +1,3 @@
+com\rockers\api\service\rest\StatusController.class
+com\rockers\api\service\rest\UserController.class
+com\rockers\api\ServletCore.class
