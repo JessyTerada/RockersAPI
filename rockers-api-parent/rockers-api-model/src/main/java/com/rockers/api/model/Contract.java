@@ -1,12 +1,28 @@
 package com.rockers.api.model;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import lombok.Data;
 
 @Data
-public class Contract {
+@Entity
+@Table
+public class Contract extends BaseEntity{
 
-	public String idContract;
+	@Override
+	public String toString() {
+		return "Project [name=" + name + "]";
+	}
+	
+	@Column(name = "name", nullable = false, unique = true)
 	public String name;
-	public User user;
+	
+	@OneToMany(mappedBy = "contract")
+	public List<Team> teamList;
 	
 }

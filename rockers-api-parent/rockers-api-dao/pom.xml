@@ -17,6 +17,12 @@
   		<artifactId>rockers-api-model</artifactId>
   		<version>${rockers-api-version}</version>
   	</dependency>
+  	
+  	<dependency>
+  		<groupId>rockers-api</groupId>
+  		<artifactId>rockers-api-repository</artifactId>
+  		<version>${rockers-api-version}</version>
+  	</dependency>
   </dependencies>
   
 </project>

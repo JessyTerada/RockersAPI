@@ -14,38 +14,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rockers.api.dao.UserDao;
 import com.rockers.api.model.User;
+import com.rockers.api.repository.IUserRepository;
 
 @RestController
 @RequestMapping(value="/user")
 public class UserController {
 
 	@Autowired
-	private UserDao dao;
+	IUserRepository userRepository;
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<String> saveUser(@RequestBody User user){
-	
-		String id = dao.save(user);
-		return new ResponseEntity<String>(id, HttpStatus.OK);
+	public ResponseEntity<Long> saveUser(@RequestBody User user){
+		userRepository.save(user);
+		return new ResponseEntity<Long>(user.getId().longValue(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
-	public ResponseEntity<String> updateUser(@PathVariable("id") String id){
-		User user = dao.findOne(id);
+	public ResponseEntity<String> updateUser(@PathVariable("id") Long id){
+		User user = userRepository.findOne(id);
 		return new ResponseEntity<String>(user.getLogin(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="/show")
 	public ResponseEntity<List<User>> showUser(){
 		List<User> usuarios = new ArrayList<User>();
-		usuarios = dao.listAll();		
+		usuarios = userRepository.findAll();		
 		return new ResponseEntity<List<User>>(usuarios, HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-	public ResponseEntity<String> deleteUser(@PathVariable("id") String id){
-		dao.delete(id);
+	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
+		userRepository.delete(id);
 		return new ResponseEntity<String>("User has deleted successfully", HttpStatus.OK);
 	}
 }

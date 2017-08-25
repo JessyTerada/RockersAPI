@@ -14,36 +14,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rockers.api.dao.EmployeeDao;
 import com.rockers.api.model.Employee;
+import com.rockers.api.repository.IEmployeeRepository;
 
 @RestController
 @RequestMapping(value="/employee")
 public class EmployeeController {
 
 	@Autowired
-	private EmployeeDao dao;
+	IEmployeeRepository employeeRepository;
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<String> saveEmployee(@RequestBody Employee emp){
-		String idWipro = dao.save(emp);
-		return new ResponseEntity<String>(idWipro, HttpStatus.OK);		
+	public ResponseEntity<Long> saveEmployee(@RequestBody Employee emp){
+		employeeRepository.save(emp);
+		return new ResponseEntity<Long>(emp.getId().longValue(), HttpStatus.OK);		
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/update/{idWipro}")
-	public ResponseEntity<String> updateEmployee(@PathVariable ("idWipro") String idWipro){
-		Employee emp = dao.findOne(idWipro);
+	public ResponseEntity<String> updateEmployee(@PathVariable ("idWipro") Long idWipro){
+		Employee emp = employeeRepository.findOne(idWipro);
 		return new ResponseEntity<String>(emp.getName(), HttpStatus.OK);		
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="/show")
 	public ResponseEntity<List<Employee>> showEmployee(){
 		List<Employee> employees = new ArrayList<Employee>();
-		employees = dao.listAll();
+		employees = employeeRepository.findAll();
 		return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method= RequestMethod.DELETE, value="/delete/{idWipro}")
-	public ResponseEntity<String> deleteEmployee(@PathVariable ("idWipro") String idWipro){
-		dao.delete(idWipro);
+	public ResponseEntity<String> deleteEmployee(@PathVariable ("idWipro") Long idWipro){
+		employeeRepository.delete(idWipro);
 		return new ResponseEntity<String>("Employee has deleted successfully", HttpStatus.OK);
 		
 	}

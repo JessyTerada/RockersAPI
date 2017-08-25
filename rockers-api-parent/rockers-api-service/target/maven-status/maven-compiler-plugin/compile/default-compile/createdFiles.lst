@@ -1,3 +1,6 @@
 com\rockers\api\service\rest\StatusController.class
-com\rockers\api\service\rest\UserController.class
+com\rockers\api\service\rest\ContractController.class
 com\rockers\api\ServletCore.class
+com\rockers\api\service\rest\UserController.class
+com\rockers\api\service\rest\EmployeeController.class
+com\rockers\api\service\rest\TeamController.class

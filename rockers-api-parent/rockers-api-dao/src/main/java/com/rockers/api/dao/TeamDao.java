@@ -13,16 +13,14 @@ public class TeamDao implements Crud<Team> {
 	@Override
 	public Team findOne(String id) {
 		Team team = new Team();
-		team.setIdTeam(id);
-		team.setNameTeam("ESS");
-		team.setEmployees(null);
+		team.setName("ESS");
+		team.setEmployeesList(null);
 		return team;
 	}
 
 	@Override
 	public String save(Team t) {
-		t.setIdTeam("78");
-		return t.getIdTeam();
+		return null;
 	}
 
 	@Override
@@ -30,15 +28,13 @@ public class TeamDao implements Crud<Team> {
 		List<Team> teams = new ArrayList<Team>();
 		
 		Team team1 = new Team();
-		team1.setIdTeam("96");
-		team1.setNameTeam("kekeke");
-		team1.setEmployees(null);
+		team1.setName("kekeke");
+		team1.setEmployeesList(null);
 		teams.add(team1);
 		
 		Team team2 = new Team();
-		team2.setIdTeam("12");
-		team2.setNameTeam("llflf");
-		team2.setEmployees(null);
+		team2.setName("llflf");
+		team2.setEmployeesList(null);
 		teams.add(team2);
 		
 		return teams;
