@@ -29,9 +29,9 @@ public class EmployeeController {
 		return new ResponseEntity<Long>(emp.getId().longValue(), HttpStatus.OK);		
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/update/{idWipro}")
-	public ResponseEntity<String> updateEmployee(@PathVariable ("idWipro") Long idWipro){
-		Employee emp = employeeRepository.findOne(idWipro);
+	@RequestMapping(method=RequestMethod.PUT, value="/update")
+	public ResponseEntity<String> updateEmployee(@RequestBody Employee emp){
+		employeeRepository.saveAndFlush(emp);
 		return new ResponseEntity<String>(emp.getName(), HttpStatus.OK);		
 	}
 	

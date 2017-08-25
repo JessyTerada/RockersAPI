@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rockers.api.dao.UserDao;
@@ -23,15 +24,21 @@ public class UserController {
 	@Autowired
 	IUserRepository userRepository;
 	
+	@RequestMapping(method=RequestMethod.GET, value="/login")
+	public ResponseEntity<String> loginUser(@RequestParam String login, @RequestParam String senha ){
+		User user = userRepository.findByLoginAndPassword(login, senha);
+		return new ResponseEntity<String>(user==null ? "User not found" : user.getLogin(), HttpStatus.OK);		
+	}
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Long> saveUser(@RequestBody User user){
 		userRepository.save(user);
 		return new ResponseEntity<Long>(user.getId().longValue(), HttpStatus.OK);
 	}
 
-	@RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
-	public ResponseEntity<String> updateUser(@PathVariable("id") Long id){
-		User user = userRepository.findOne(id);
+	@RequestMapping(method=RequestMethod.PUT, value="/update")
+	public ResponseEntity<String> updateUser(@RequestBody User user){
+		userRepository.saveAndFlush(user);
 		return new ResponseEntity<String>(user.getLogin(), HttpStatus.OK);
 	}
 	
@@ -39,8 +46,7 @@ public class UserController {
 	public ResponseEntity<List<User>> showUser(){
 		List<User> usuarios = new ArrayList<User>();
 		usuarios = userRepository.findAll();		
-		return new ResponseEntity<List<User>>(usuarios, HttpStatus.OK);
-		
+		return new ResponseEntity<List<User>>(usuarios, HttpStatus.OK);		
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")

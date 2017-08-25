@@ -2,3 +2,12 @@ server:
  port: 9125
  contextPath: /rockers-api 
  
+spring:
+ jpa:
+  hibernate:
+   ddl-auto: update
+ datasource:
+  url: jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  driverClassName: org.h2.Driver
+  username: sa
+  password:

@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rockers.api.dao.ContractDao;
 import com.rockers.api.model.Contract;
+import com.rockers.api.model.Employee;
 import com.rockers.api.repository.IContractRepository;
 
 @RestController
@@ -23,14 +25,14 @@ public class ContractController {
 	IContractRepository contractRepository;
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Long> saveContract(Contract cont){
+	public ResponseEntity<Long> saveContract(@RequestBody Contract cont){
 		contractRepository.save(cont);
 		return new ResponseEntity<Long>(cont.getId().longValue(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/update/{idCont}")
-	public ResponseEntity<String> updateContract(@PathVariable ("idCont") Long idCont){
-		Contract cont = contractRepository.findOne(idCont); 
+	@RequestMapping(method=RequestMethod.PUT, value="/update")
+	public ResponseEntity<String> updateContract(@RequestBody Contract cont){
+		contractRepository.save(cont); 
 		return new ResponseEntity<String>(cont.getName(), HttpStatus.OK);		
 	}
 	
