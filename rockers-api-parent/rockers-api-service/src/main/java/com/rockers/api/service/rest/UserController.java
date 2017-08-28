@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +14,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rockers.api.dao.UserDao;
+import com.rockers.api.model.Message;
 import com.rockers.api.model.User;
+import com.rockers.api.repository.IEmployeeRepository;
 import com.rockers.api.repository.IUserRepository;
 
 @RestController
 @RequestMapping(value="/user")
 public class UserController {
 
+	private static final String MESSAGE_INSERT_BLANK = null;
+	private static final String MESSAGE_ERROR_DELETE = null;
 	@Autowired
 	IUserRepository userRepository;
+	
+	@Autowired
+	IEmployeeRepository employeeRespository;
 	
 	@RequestMapping(method=RequestMethod.GET, value="/login")
 	public ResponseEntity<String> loginUser(@RequestParam String login, @RequestParam String senha ){
@@ -31,15 +38,31 @@ public class UserController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Long> saveUser(@RequestBody User user){
+	public ResponseEntity<Message> saveUser(@RequestBody User user){
+		if (user == null || StringUtils.isEmpty(user.getLogin())){
+			return new ResponseEntity<Message>(new Message(MESSAGE_INSERT_BLANK), HttpStatus.OK);
+		}
+		
+		if (user.getEmployee() != null) {
+			user.setEmployee(
+				employeeRespository.findOne(user.getEmployee().getId())
+			);			
+		}
+		
 		userRepository.save(user);
-		return new ResponseEntity<Long>(user.getId().longValue(), HttpStatus.OK);
+		String msg = user.getLogin() + " saved"; 	
+		return new ResponseEntity<Message>(new Message(msg), HttpStatus.OK);
 	}
 
 	@RequestMapping(method=RequestMethod.PUT, value="/update")
-	public ResponseEntity<String> updateUser(@RequestBody User user){
+	public ResponseEntity<Message> updateUser(@RequestBody User user){
+		if (user == null || StringUtils.isEmpty(user.getLogin())){
+			return new ResponseEntity<Message>(new Message(MESSAGE_INSERT_BLANK), HttpStatus.OK);
+		}
+		
 		userRepository.saveAndFlush(user);
-		return new ResponseEntity<String>(user.getLogin(), HttpStatus.OK);
+		String msg = user.getLogin() + " saved"; 	
+		return new ResponseEntity<Message>(new Message(msg), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="/show")
@@ -50,8 +73,17 @@ public class UserController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
-		userRepository.delete(id);
-		return new ResponseEntity<String>("User has deleted successfully", HttpStatus.OK);
+	public ResponseEntity<Message> deleteUser(@PathVariable("id") Long id){
+		if (id == null || StringUtils.isEmpty(id)){
+			return new ResponseEntity<Message>(new Message(MESSAGE_INSERT_BLANK), HttpStatus.OK);
+		}
+		
+		try {
+			userRepository.delete(id);
+			String msg = "User saved"; 	
+			return new ResponseEntity<Message>(new Message(msg), HttpStatus.OK);
+		}catch(Exception e) {			
+			return new ResponseEntity<Message>(new Message(MESSAGE_ERROR_DELETE), HttpStatus.OK);
+		}
 	}
 }

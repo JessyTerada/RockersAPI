@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/status")
 public class StatusController {
 
-	@RequestMapping(method = RequestMethod.GET, value="/{name}")
-	public ResponseEntity<String> getStatu(@PathVariable String name){
-		String msg = "Good móning " + name + " our service s UP and Running!!!";
+	@RequestMapping(method = RequestMethod.GET, value="/{name}/{id}")
+	public ResponseEntity<String> getStatu(@PathVariable String name, @PathVariable String id){
+		String msg = "Good morning " + name + " our service s " + id + " UP and Running!!!";
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 	}
 }
